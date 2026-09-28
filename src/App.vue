@@ -14,6 +14,7 @@ const contactEmail = "chaitu4765@gmail.com";
 const contactPhone = "+91 1234567891";
 const contactPhoneHref = "tel:+911234567891";
 const activeSection = ref(window.location.hash.slice(1) || "top");
+const menuOpen = ref(false);
 const sectionHref = (target) => page === "home" ? `#${target}` : `/#${target}`;
 const menuItems = [
   { label: "Home", slug: "home", target: "top", glow: "rgba(33,164,196,.17)" },
@@ -30,6 +31,11 @@ let sectionObserver;
 
 function navigateTo(target) {
   activeSection.value = target;
+  menuOpen.value = false;
+}
+
+function closeMenuOnEscape(event) {
+  if (event.key === "Escape") menuOpen.value = false;
 }
 
 function syncHashSection() {
@@ -54,12 +60,14 @@ onMounted(() => {
   }, { rootMargin: "-18% 0px -66% 0px", threshold: 0 });
   document.querySelectorAll("#top, #about, #services, #projects, #why-us, #process, #blogs, #contact").forEach((section) => sectionObserver.observe(section));
   window.addEventListener("hashchange", syncHashSection);
+  window.addEventListener("keydown", closeMenuOnEscape);
 });
 
 onBeforeUnmount(() => {
   observer?.disconnect();
   sectionObserver?.disconnect();
   window.removeEventListener("hashchange", syncHashSection);
+  window.removeEventListener("keydown", closeMenuOnEscape);
 });
 </script>
 
@@ -86,7 +94,11 @@ onBeforeUnmount(() => {
       </div>
     </header>
     <nav id="main-navigation" class="primary-nav" aria-label="Main navigation">
-      <ul class="primary-nav__list">
+      <button class="primary-nav__toggle" type="button" :aria-expanded="menuOpen" aria-controls="primary-nav-links" :aria-label="menuOpen ? 'Close navigation menu' : 'Open navigation menu'" @click="menuOpen = !menuOpen">
+        <span class="primary-nav__toggle-icon" :class="{ 'is-open': menuOpen }" aria-hidden="true"><i /><i /><i /></span>
+        <span>{{ menuOpen ? "Close" : "Menu" }}</span>
+      </button>
+      <ul id="primary-nav-links" class="primary-nav__list" :class="{ 'is-open': menuOpen }">
         <li v-for="(item, index) in menuItems" :key="item.slug" class="primary-nav__item" :style="{ '--menu-index': index, '--menu-delay': `${index * 38}ms`, '--menu-glow': item.glow }">
           <a class="primary-nav__link" :href="sectionHref(item.target)" :aria-current="item.target === activeSection ? 'location' : undefined" @click="navigateTo(item.target)">
             <span class="primary-nav__flip">
