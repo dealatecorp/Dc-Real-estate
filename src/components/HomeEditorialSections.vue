@@ -3,9 +3,9 @@ const linkedin = "https://in.linkedin.com/company/godha-developers";
 const mapLink = "https://www.google.com/maps/search/?api=1&query=Yendada%2C+Visakhapatnam";
 
 const principles = [
-  { index: "01", title: "Clarity", body: "A distinct point of view guides each detail, from the first impression to the everyday experience." },
-  { index: "02", title: "Culture", body: "A sense of place and cultural resonance help give a community its own character." },
-  { index: "03", title: "Class", body: "Thoughtful design brings comfort, elegance, and a more considered standard of living." },
+  { index: "01", title: "Clarity", imagePosition: 0, body: "A distinct point of view guides each detail, from the first impression to the everyday experience." },
+  { index: "02", title: "Culture", imagePosition: 50, body: "A sense of place and cultural resonance help give a community its own character." },
+  { index: "03", title: "Class", imagePosition: 100, body: "Thoughtful design brings comfort, elegance, and a more considered standard of living." },
 ];
 
 const approach = [
@@ -55,8 +55,8 @@ const journal = [
     <div class="principles-section__grid">
       <article v-for="principle in principles" :key="principle.index" class="principle-card reveal">
         <span class="principle-card__index">{{ principle.index }}</span>
+        <img class="principle-card__image" src="/godha-values-triptych.png" alt="" :style="{ objectPosition: `${principle.imagePosition}%` }" loading="lazy" decoding="async" />
         <div><h3>{{ principle.title }}</h3><p>{{ principle.body }}</p></div>
-        <span class="principle-card__mark" aria-hidden="true">✳</span>
       </article>
     </div>
   </section>

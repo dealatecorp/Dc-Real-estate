@@ -11,10 +11,10 @@ const details = reactive({
 });
 
 const firstName = computed(() => details.name.trim().split(/\s+/)[0] || "there");
-const emailHref = computed(() => {
+const whatsappHref = computed(() => {
   const subject = `Godha Towers enquiry — ${details.name}`;
   const body = [
-    "Godha Towers project enquiry",
+    `*${subject}*`,
     "",
     `Name: ${details.name}`,
     `Email: ${details.email}`,
@@ -23,12 +23,12 @@ const emailHref = computed(() => {
     `Message: ${details.message || "Not provided"}`,
   ].join("\n");
 
-  return `mailto:chaitu4765@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  return `https://wa.me/917981456043?text=${encodeURIComponent(body)}`;
 });
 
 function sendEnquiry() {
   submitted.value = true;
-  window.location.href = emailHref.value;
+  window.open(whatsappHref.value, "_blank", "noopener,noreferrer");
 }
 
 function editEnquiry() {
@@ -120,25 +120,25 @@ function editEnquiry() {
             </div>
 
             <button class="quote-form__submit" type="submit">
-              <span>Continue in email</span>
+              <span>Continue in WhatsApp</span>
               <span class="quote-form__submit-icon" aria-hidden="true">↗</span>
             </button>
-            <p class="quote-form__note">This opens a draft addressed to chaitu4765@gmail.com. Review it in your email app and press Send to share your enquiry.</p>
+            <p class="quote-form__note">This opens WhatsApp with your enquiry addressed to +91 7981456043. Review the details and press Send to share them.</p>
           </form>
         </template>
 
         <div v-else class="quote-request__success" role="status" aria-live="polite">
-          <span class="quote-request__step">ENQUIRY SUMMARY · READY</span>
+          <span class="quote-request__step">WHATSAPP ENQUIRY · READY</span>
           <h3>Thank you, {{ firstName }}.</h3>
-          <p>Your email draft is addressed to <strong>chaitu4765@gmail.com</strong>.</p>
+          <p>Your WhatsApp enquiry is addressed to <strong>+91 7981456043</strong>.</p>
           <dl class="quote-request__summary">
             <div><dt>CONTACT</dt><dd>{{ details.email }} · {{ details.phone }}</dd></div>
             <div><dt>PROJECT INTEREST</dt><dd>{{ details.interest }}</dd></div>
             <div v-if="details.message"><dt>YOUR NOTE</dt><dd>{{ details.message }}</dd></div>
           </dl>
-          <p class="quote-request__notice">Your email app should open with these details filled in. Review the draft and press Send; the website cannot send it on its own.</p>
-          <a class="quote-request__developer-link" :href="emailHref">
-            Open email draft again <span aria-hidden="true">↗</span>
+          <p class="quote-request__notice">WhatsApp opens with these details filled in. Review the message and press Send; the website does not send it on its own.</p>
+          <a class="quote-request__developer-link" :href="whatsappHref" target="_blank" rel="noopener noreferrer">
+            Open WhatsApp message again <span aria-hidden="true">↗</span>
           </a>
           <button class="quote-request__edit" type="button" @click="editEnquiry">Edit your details</button>
         </div>
